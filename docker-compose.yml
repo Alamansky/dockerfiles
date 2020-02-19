@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  # database
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    env_file: .env
+    networks:
+      - wpsite
+  # phpmyadmin
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    env_file: .env
+    networks:
+      - wpsite
+  # wordpress
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - "80:80"
+    restart: always
+    volumes: ["./:/var/www/html"]
+    env_file: .env
+    networks:
+      - wpsite
+  # wp cli
+  cli:
+    depends_on:
+      - db
+      - wordpress
+    image: wordpress:cli
+    volumes: ["./:/var/www/html", "db_data:/var/lib/mysql"]
+    networks:
+      - wpsite
+    tty: true
+    # when tty is true, use WP-CLI with command docker exec -it <containerIdOrName> bash
+    # when tty is false, WP-CLI container will exit with code 0. Re-run container with `docker-compose run --rm cli bash`
+networks:
+  wpsite:
+volumes:
+  db_data:
