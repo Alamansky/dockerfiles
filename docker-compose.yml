@@ -24,5 +24,14 @@ services:
     env_file: .env
     volumes:
       - mysql:/var/lib/mysql
+  app:
+    image: node:latest
+    working_dir: /usr/src/app
+    tty: true # keep container alive without default command
+    ports:
+      - "3000:3000"
+    volumes:
+      ["./:/usr/src/app", "prisma-node-modules:/usr/src/app/node_modules"]
 volumes:
   mysql: ~
+  boilerplate-node-modules:
