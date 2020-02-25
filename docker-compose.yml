@@ -18,20 +18,28 @@ services:
             password: ${MYSQL_ROOT_PASSWORD}
     depends_on:
       - mysql
+    networks:
+      - prisma
   mysql:
     image: mysql:5.7
     restart: always
     env_file: .env
     volumes:
       - mysql:/var/lib/mysql
+    networks:
+      - prisma
   app:
     image: node:latest
     working_dir: /usr/src/app
     tty: true # keep container alive without default command
     ports:
-      - "3000:3000"
-    volumes:
-      ["./:/usr/src/app", "prisma-node-modules:/usr/src/app/node_modules"]
+      - "4000:4000"
+    volumes: ["./:/usr/src/app", "yoga-node-modules:/usr/src/app/node_modules"]
+    env_file: .env
+    networks:
+      - prisma
 volumes:
   mysql: ~
-  boilerplate-node-modules:
+  yoga-node-modules:
+networks:
+  prisma:

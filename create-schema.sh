@@ -1,3 +1,5 @@
+echo "
+
 type Query {
   user(id: ID!): User
 }
@@ -10,3 +12,8 @@ type User {
   id: ID!
   name: String
 }
+
+
+" > schema.graphql
+
+echo schema file created;

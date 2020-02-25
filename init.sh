@@ -17,6 +17,10 @@ echo What is the Prisma Management API Secret?;
 
 read PRISMA_MANAGEMENT_API_SECRET;
 
+echo What is the Prisma service secret?;
+
+read PRISMA_SECRET;
+
 # Set up .env file
 
 touch .env;
@@ -31,7 +35,7 @@ MYSQL_USER=$MYSQL_USER
 # service: Prisma
 
 PRISMA_MANAGEMENT_API_SECRET=$PRISMA_MANAGEMENT_API_SECRET
-PRISMA_SECRET="dummy value, replace by running prisma token via Prisma CLI"
+PRISMA_SECRET=$PRISMA_SECRET
 
 " > .env
 
